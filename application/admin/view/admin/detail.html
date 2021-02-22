@@ -1,0 +1,56 @@
+{extend name="public/base"}
+
+{block name="zhlb"}layui-this{/block}
+
+{block name="main"}
+<fieldset class="layui-elem-field">
+	<legend>账号详情</legend>
+	<div class="layui-field-box">
+		<form class="layui-form">
+			<div class="layui-form-item">
+				<label class="layui-form-label">账号</label>
+				<div class="layui-input-inline layui-input">
+					<div class="layui-form-mid layui-word-aux">{$info.acc}</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">密码</label>
+				<div class="layui-input-inline layui-input">
+					<div class="layui-form-mid layui-word-aux">{$info.password}</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">角色</label>
+				<div class="layui-input-block">
+					<input type="radio" name="role" value="0" title="管理员" {if condition="$info.role eq 0"}checked{else /}disabled=""{/if}>
+					<input type="radio" name="role" value="1" title="普通" {if condition="$info.role eq 1"}checked{else /}disabled=""{/if}>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">状态</label>
+				<div class="layui-input-block">
+					<input type="radio" name="state" value="0" title="禁用" {if condition="$info.state eq 0"}checked{else /}disabled=""{/if}>
+					<input type="radio" name="state" value="1" title="正常" {if condition="$info.state eq 1"}checked{else /}disabled=""{/if}>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">创建时间</label>
+				<div class="layui-input-inline layui-input">
+					<div class="layui-form-mid layui-word-aux">{$info.create_time}</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button type="button" class="layui-btn layui-btn-primary" onclick="javascript:history.back(-1);">返回</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</fieldset>
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+	layui.use('form', function(){});
+</script>
+{/block}

@@ -1,0 +1,196 @@
+{extend name="public/base"}
+
+{block name="yhlb"}layui-this{/block}
+
+{block name="main"}
+<fieldset class="layui-elem-field">
+	<legend>用户详情</legend>
+	<div class="layui-field-box">
+		<form class="layui-form">
+			<input type="hidden" name="id" value="{$info.id}" />
+			<div class="layui-form-item">
+				<label class="layui-form-label"></label>
+				<div class="layui-input-inline">
+					<input type="hidden" name="headimgurl" value="{$info.headimgurl}" />
+					<img src="{if condition='$info.headimgurl eq null'}__IMG__/headImg.jpg{else/}__UPLODE__/{$info.headimgurl}{/if}" class="layui-nav-img headImgBtn" style="width: 100px;height: 100px;" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">昵称</label>
+				<div class="layui-input-inline">
+					<input type="text" name="nickname" value="{$info.nickname}" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">手机号</label>
+				<div class="layui-input-inline">
+					<div class="layui-form-mid layui-word-aux">{$info.mobile}</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">性别</label>
+				<div class="layui-input-block">
+					<input type="radio" name="sex" value="0" title="保密" {if condition="$info.sex eq 0"}checked{/if}>
+					<input type="radio" name="sex" value="1" title="男" {if condition="$info.sex eq 1"}checked{/if}>
+					<input type="radio" name="sex" value="2" title="女" {if condition="$info.sex eq 2"}checked{/if}>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">生日</label>
+				<div class="layui-input-inline">
+					<input type="text" name="birthday" value="{$info.birthday}" class="layui-input laydate-birthday">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">星座</label>
+				<div class="layui-input-inline">
+					<div class="layui-form-mid layui-word-aux starZuoBox">{$info.star_title}</div>
+					<input type="hidden" name="star" value="{$info.star}" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">积分</label>
+				<div class="layui-input-inline">
+					<div class="layui-form-mid layui-word-aux">{$info.integral}</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">所属地区</label>
+				<div class="layui-input-inline">
+					<select name="province" lay-filter="getCityBtn">
+						<option value="">请选择省</option>
+						{foreach name="prov" item="v"}
+						<option value="{$key}" {if condition="$info.province eq $key"}selected{/if}>{$v}</option>
+						{/foreach}
+					</select>
+				</div>
+				<div class="layui-input-inline">
+					<select name="city" lay-filter="getAreaBtn" class="getAreaBtn">
+						<option value="">请选择市</option>
+						{foreach name="city" item="v"}
+						<option value="{$key}" {if condition="$info.city eq $key"}selected{/if}>{$v}</option>
+						{/foreach}
+					</select>
+				</div>
+				<div class="layui-input-inline layui-form">
+					<select name="area" class="getStreetBtn">
+						<option value="">请选择县/区</option>
+						{foreach name="area" item="v"}
+						<option value="{$key}" {if condition="$info.area eq $key"}selected{/if}>{$v}</option>
+						{/foreach}
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">详细地址</label>
+				<div class="layui-input-inline" style="width: 590px;">
+					<input type="text" name="address" value="{$info.address}" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">创建时间</label>
+				<div class="layui-input-inline">
+					<div class="layui-form-mid layui-word-aux">{$info.create_time}</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button type="button" class="layui-btn" lay-submit lay-filter="userform">保存</button>
+					<button type="button" class="layui-btn layui-btn-primary" onclick="javascript:history.back(-1);">返回</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</fieldset>
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+layui.use(['form','upload'], function(){
+	var $ = layui.$;
+  	var form = layui.form;
+  	var upload = layui.upload;
+
+	// 提交数据
+	form.on('submit(userform)', function(data){
+		$.ajax({
+			type: "post"
+			,url: "{:url('admin/user/edit')}"
+			,data: data.field
+			,dataType: "json"
+			,success: function(data){
+				layer.msg(data.msg, {time:1000}, function(){
+					if(data.code == 200){
+						window.location.href = '{:url("admin/user/lists")}';
+					}
+				});
+			},error: function(){
+				layer.msg("连接失败！");
+			}
+		});
+	});
+
+	// 上传头像
+	upload.render({
+		elem: ".headImgBtn"
+		,url: "{:url('admin/user/uploadHeadImg')}"
+		,accept: "images"
+		,acceptMime: "image/*"
+		,auto: true
+		,choose: function(obj){
+		    obj.preview(function(index, file, result){
+                $(".headImgBtn").attr('src', result);
+            });
+		}
+		,done: function(res){
+  			$("[name=headimgurl]").val(res.data);
+			if(res.code == 400){
+				layer.msg(res.msg);
+			}
+		}
+	});
+
+	// 获取城市数据
+	form.on('select(getCityBtn)', function(data){
+		$.ajax({
+			type: "post"
+			,url: "{:url('admin/area/getCity')}"
+			,data: {id:data.value}
+			,dataType: "json"
+			,success: function(data){
+				var option = '<option value="">请选择市</option>';
+				$.each(data.data, function(k,v){
+					option += '<option value="'+k+'">'+v+'</option>';
+				});
+
+				$(".getAreaBtn").html(option);
+				$(".getStreetBtn").html('<option value="">请选择县/区</option>');
+				form.render("select");
+			},error: function(){
+				layer.msg("连接失败！");
+			}
+		});
+	});
+
+	// 获取地区数据
+	form.on('select(getAreaBtn)', function(data){
+		$.ajax({
+			type: "post"
+			,url: "{:url('admin/area/getArea')}"
+			,data: {id:data.value}
+			,dataType: "json"
+			,success: function(data){
+				var option = '<option value="">请选择县/区</option>';
+				$.each(data.data, function(k,v){
+					option += '<option value="'+k+'">'+v+'</option>';
+				});
+				$(".getStreetBtn").html(option);
+				form.render("select");
+			},error: function(){
+				layer.msg("连接失败！");
+			}
+		});
+	});
+});
+</script>
+{/block}

@@ -1,0 +1,92 @@
+{extend name="public/base"}
+
+{block name="yhlb"}layui-this{/block}
+
+{block name="main"}
+<fieldset class="layui-elem-field">
+	<legend>用户详情</legend>
+	<div class="layui-field-box">
+		<form class="layui-form" action="">
+			<div class="layui-form-item">
+				<label class="layui-form-label"></label>
+				<div class="layui-input-inline">
+					<img src="{if condition='$info.headimgurl eq null'}__IMG__/headImg.jpg{else/}__UPLODE__/{$info.headimgurl}{/if}" class="layui-nav-img" style="width: 100px;height: 100px;" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">昵称</label>
+				<div class="layui-input-inline layui-input">
+					<div class="layui-form-mid layui-word-aux">{$info.nickname}</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">手机号</label>
+				<div class="layui-input-inline layui-input">
+					<div class="layui-form-mid layui-word-aux">{$info.mobile}</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">性别</label>
+				<div class="layui-input-block">
+					<input type="radio" name="sex" value="0" title="保密" {if condition="$info.sex eq 0"}checked{else /}disabled{/if}>
+					<input type="radio" name="sex" value="1" title="男" {if condition="$info.sex eq 1"}checked{else /}disabled{/if}>
+					<input type="radio" name="sex" value="2" title="女" {if condition="$info.sex eq 2"}checked{else /}disabled{/if}>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">生日</label>
+				<div class="layui-input-inline layui-input">
+					<div class="layui-form-mid layui-word-aux">{$info.birthday}</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">星座</label>
+				<div class="layui-input-inline layui-input">
+					<div class="layui-form-mid layui-word-aux">{$info.star_title}</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">积分</label>
+				<div class="layui-input-inline layui-input">
+					<div class="layui-form-mid layui-word-aux">{$info.integral}</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">区域</label>
+				<div class="layui-input-inline layui-input">
+					<div class="layui-form-mid layui-word-aux">{$info.prov_title}</div>
+				</div>
+				<div class="layui-input-inline layui-input">
+					<div class="layui-form-mid layui-word-aux">{$info.city_title}</div>
+				</div>
+				<div class="layui-input-inline layui-input">
+					<div class="layui-form-mid layui-word-aux">{$info.area_title}</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">详细地址</label>
+				<div class="layui-input-inline layui-input" style="width: 590px;">
+					<div class="layui-form-mid layui-word-aux">{$info.address}</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">创建时间</label>
+				<div class="layui-input-inline layui-input">
+					<div class="layui-form-mid layui-word-aux">{$info.create_time}</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button type="button" class="layui-btn layui-btn-primary" onclick="javascript:history.back(-1);">返回</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</fieldset>
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+	layui.use('form', function(){});
+</script>
+{/block}

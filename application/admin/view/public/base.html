@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Y.C.K`影业帝国</title>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/layui/css/layui.css">
+</head>
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <div class="layui-header">
+            <div class="layui-logo">Y.C.K`影业帝国</div>
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item {block name='index'}{/block}">
+                    <a href="{:url('admin/index/index')}"><i class="layui-icon layui-icon-home"></i> 首页</a>
+                </li>
+                <!-- <li class="layui-nav-item"><a href="javascript:;">商品管理</a></li>
+                <li class="layui-nav-item"><a href="javascript:;">用户</a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">其它系统</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">邮件管理</a></dd>
+                        <dd><a href="javascript:;">消息管理</a></dd>
+                        <dd><a href="javascript:;">授权管理</a></dd>
+                    </dl>
+                </li> -->
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="{$Think.session.headimgurl}" class="layui-nav-img"> {$Think.session.accName}
+                        <span class="layui-nav-more"></span>
+                    </a>
+                    <dl class="layui-nav-child" style="text-align: center;">
+                        <dd><a href="{:url('admin/user/edit')}?id={$Think.session.id}">基本资料</a></dd>
+                        <dd><a href="javascript:;" onclick="signOut()">安全退出</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;">
+                            <i class="layui-icon layui-icon-user"></i> 用户管理
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd class="{block name='xtsz'}{/block}"><a href="javascript:;">系统设置</a></dd>
+                            <dd class="{block name='zhlb'}{/block}"><a href="{:url('admin/admin/lists')}">账号列表</a></dd>
+                            <dd class="{block name='yhlb'}{/block}"><a href="{:url('admin/user/lists')}">用户列表</a></dd>
+                            <dd class="{block name='qxgl'}{/block}"><a href="javascript:;">权限管理</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon layui-icon-video"></i> 影视管理
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd class="{block name='yslb'}{/block}"><a href="javascript:;">影视列表</a></dd>
+                        </dl>
+                    </li>
+                    <!-- <li class="layui-nav-item"><a href="">云市场</a></li> -->
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 内容主体区域 -->
+        <div class="layui-body">
+            <div style="padding: 15px;">
+                {block name="main"}{/block}
+            </div>
+        </div>
+      
+        <!-- 底部固定区域 -->
+        <div class="layui-footer">
+            © layui.com - 底部固定区域
+        </div>
+    </div>
+    <!-- JavaScript代码区域 -->
+    <script type="text/javascript" src="__JS__/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/layui/layui.js"></script>
+    <script>
+    layui.use(['layer','element','laydate'], function(){
+        var $       = layui.$;
+        var layer   = layui.layer;
+        var element = layui.element;
+        var laydate = layui.laydate;
+
+        // 日期范围
+        laydate.render({
+            elem: '.laydate-between-date'
+            ,range: '~'
+        });
+
+        // 生日选择器
+        laydate.render({
+            elem: '.laydate-birthday' //指定元素
+            ,max: 'new Date()'
+            ,btns: ['clear']
+            ,done: function(value){
+                if(!value){
+                    $('[name=star]').val('');
+                    $('.starZuoBox').text('');
+                    return false;
+                }
+                // 匹配星座
+                $.ajax({
+                    type: "post"
+                    ,url: "{:url('admin/user/mateStarZuo')}"
+                    ,data: {date: value}
+                    ,dataType: "json"
+                    ,success: function(data){
+                        $('[name=star]').val(data.data.id);
+                        $('.starZuoBox').text(data.data.title);
+                    },error: function(){
+                        layer.msg('连接失败！');
+                    }
+                });
+            }
+        });
+    });
+    
+    // 退出系统
+    function signOut(){
+        layer.confirm("确定退出系统吗？", function(){
+            $.ajax({
+                type: "get"
+                ,url: "{:url('admin/login/signOut')}"
+                ,success: function(data){
+                    layer.msg(data.msg, {time:2000}, function(){
+                        window.location.href = "{:url('index/index')}";
+                    });
+                }
+            });
+        });
+    }
+
+    $(document).ready(function(){
+        // 重置
+        $(".resetBtn").click(function(){ 
+            $("input").val('');
+        });
+    });
+    </script>
+    {block name="js"}{/block}
+</body>
+</html>
