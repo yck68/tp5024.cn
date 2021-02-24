@@ -1,0 +1,65 @@
+{extend name="public/base"}
+
+{block name="index"}layui-this{/block}
+
+{block name="main"}
+<div class="layui-carousel" id="rotation">
+	<div carousel-item>
+		<div><img src="__IMG__/1.jpg" width="100%" height="100%" /></div>
+		<div><img src="__IMG__/2.jpg" width="100%" height="100%" /></div>
+		<div><img src="__IMG__/3.jpg" width="100%" height="100%" /></div>
+		<div><img src="__IMG__/4.jpg" width="100%" height="100%" /></div>
+		<div><img src="__IMG__/5.jpg" width="100%" height="100%" /></div>
+		<div><img src="__IMG__/6.jpg" width="100%" height="100%" /></div>
+		<div><img src="__IMG__/7.jpg" width="100%" height="100%" /></div>
+		<div><img src="__IMG__/8.jpg" width="100%" height="100%" /></div>
+	</div>
+</div>
+
+<div style="background-color: #fff; padding: 8px 16px; margin: 10px 0;">
+	<span class="layui-breadcrumb" lay-separator="|">
+		<a href="javascript:;">喜剧</a>
+		<a href="javascript:;">数学</a>
+		<a href="javascript:;">外语</a>
+		<a href="javascript:;">理综</a>
+		<a href="javascript:;">文综</a>
+	</span>
+</div>
+
+<div>
+	<div class="layui-card">
+		<div class="layui-card-header layui-bg-green">最近更新
+			<span style="position: absolute;right:10px;">
+				<a href="javascript:;" style="color:#fff;">[ 查看更多 ]</a>
+			</span>
+		</div>
+		<div class="layui-card-body">
+			<ul>
+				<li style="margin:4px 0;border-bottom:1px dotted #ccc;padding:4px;">
+					<span>[09-30]</span>
+					<a href="javascript:;">山东省一模试题</a>
+					<span style="position: absolute;right: 10px;">[类型：模拟卷 | 适应：高三]</span>
+				</li>
+				<li style="margin:4px 0;border-bottom:1px dotted #ccc;padding:4px;">
+					<span>[09-30]</span>
+					<a href="javascript:;">山东省一模试题</a>
+					<span style="position: absolute;right: 10px;">[类型：模拟卷 | 适应：高三]</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+	layui.use('carousel', function(){
+		var carousel = layui.carousel;
+		carousel.render({
+			elem: '#rotation',
+			width: '100%', //设置容器宽度
+			arrow: 'always', //始终显示箭头
+		});
+	});
+</script>
+{/block}
