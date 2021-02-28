@@ -4,6 +4,5 @@
 require 'route/index.php';
 require 'route/admin.php';
 require 'route/miss.php'; // MISS路由
-//路由
-//路由
-//路由
+//路由1
+//路由2
